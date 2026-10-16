@@ -1,0 +1,52 @@
+# ---------------------------------------------
+# Node / npm
+# ---------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.npmrc.local
+*.tgz
+
+# Build output
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.turbo/
+
+# Test / coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# ---------------------------------------------
+# PyCharm / JetBrains
+# ---------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.idea_modules/
+
+# ---------------------------------------------
+# OS files
+# ---------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,137 @@
+// App-level Spotify state: connection phase, profile, devices, playback.
+
+import { computed, reactive, watch } from 'vue'
+import * as sp from '../lib/spotify'
+import { settings, notify } from '../store'
+import { log } from '../lib/logger'
+import { sleep } from '../lib/sleep'
+
+export const spotify = reactive({
+  /** 'loading' | 'setup' (no client ID) | 'login' (no session) | 'ready' */
+  phase: 'loading',
+  profile: null,
+  devices: [],
+  error: '',
+})
+
+const api = sp.createClient(() => settings.clientId)
+
+export const deviceActive = computed(
+  () => !!settings.deviceId && spotify.devices.some((d) => d.id === settings.deviceId),
+)
+
+function nextPhase() {
+  if (!settings.clientId) return 'setup'
+  return sp.hasSession() ? 'ready' : 'login'
+}
+
+// A different client ID invalidates the existing session.
+watch(
+  () => settings.clientId,
+  (id, previous) => {
+    if (id === previous || spotify.phase === 'loading') return
+    disconnect()
+  },
+)
+
+export async function bootstrap() {
+  const params = new URLSearchParams(window.location.search)
+  if (params.has('code') || params.has('error')) {
+    try {
+      await sp.completeLogin(settings.clientId, params)
+    } catch (err) {
+      log.warn('login failed', err)
+      spotify.error = err.message
+    } finally {
+      // Drop ?code from the address bar so a reload doesn't replay it.
+      window.history.replaceState(null, '', import.meta.env.BASE_URL)
+    }
+  }
+
+  spotify.phase = nextPhase()
+  if (spotify.phase === 'ready') await Promise.all([loadProfile(), refreshDevices()])
+}
+
+export function connect() {
+  spotify.error = ''
+  return sp.beginLogin(settings.clientId)
+}
+
+export function disconnect(message = '') {
+  sp.clearSession()
+  spotify.profile = null
+  spotify.devices = []
+  spotify.error = message
+  spotify.phase = nextPhase()
+}
+
+/** Central error handler: session loss sends the user back to "connect". */
+export function handleError(err) {
+  log.error(err)
+  if (err?.status === 401) {
+    disconnect(err.message)
+    return
+  }
+  notify(err?.message ?? String(err), 'error')
+}
+
+async function loadProfile() {
+  try {
+    spotify.profile = await api.me()
+  } catch (err) {
+    handleError(err)
+  }
+}
+
+let devicesInFlight = null
+export function refreshDevices() {
+  if (spotify.phase !== 'ready') return Promise.resolve()
+  devicesInFlight ??= api
+    .devices()
+    .then((devices) => {
+      spotify.devices = devices
+      if (!devices.some((d) => d.id === settings.deviceId)) {
+        settings.deviceId = (devices.find((d) => d.is_active) ?? devices[0])?.id ?? null
+      }
+    })
+    .catch(handleError)
+    .finally(() => {
+      devicesInFlight = null
+    })
+  return devicesInFlight
+}
+
+export function selectDevice(id) {
+  settings.deviceId = id
+}
+
+/**
+ * Plays `track` from its snippet start for its snippet length, then pauses.
+ * `keepPlaying` lets the last pair of the game play on as a victory tune.
+ */
+export async function playSnippet(track, { keepPlaying = false, shouldContinue = () => true } = {}) {
+  if (!deviceActive.value) await refreshDevices()
+  if (!settings.deviceId) {
+    throw new sp.SpotifyError(
+      'No Spotify device found. Open Spotify on a device, then pick it in the speaker menu.',
+      { status: 404, code: 'no_device' },
+    )
+  }
+  try {
+    await api.play(settings.deviceId, track.uri, track.start)
+  } catch (err) {
+    if (err.status === 404) {
+      settings.deviceId = null
+      refreshDevices()
+    }
+    throw err
+  }
+  await sleep(track.duration)
+  if (!keepPlaying && shouldContinue()) await stopPlayback()
+}
+
+export async function stopPlayback() {
+  if (spotify.phase !== 'ready' || !settings.deviceId) return
+  // Pausing an already paused player returns 403 — harmless, ignore.
+  await api.pause(settings.deviceId).catch((err) => log.debug('pause ignored', err))
+}

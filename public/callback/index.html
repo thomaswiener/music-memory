@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>MUSIC MEMORY</title>
+    <!-- Spotify redirects here after login. Hand the ?code=… back to the app root,
+         which finishes the PKCE exchange. Works on any static host, SPA fallback or not. -->
+    <script>
+      location.replace(location.pathname.replace(/callback\/?(index\.html)?$/, '') + location.search)
+    </script>
+  </head>
+  <body></body>
+</html>

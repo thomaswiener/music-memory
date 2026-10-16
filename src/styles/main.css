@@ -1,0 +1,181 @@
+/* Design tokens — v1 referenced an undefined --link-color; everything is defined here now. */
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --ink: #1a1a1a;
+  --muted: #9a9a9a;
+  --muted-2: #b5b5b5;
+  --line: #e5e7eb;
+  --line-strong: #d4d4d8;
+  --hover: #f1f3f5;
+  --link: #2563eb;
+  --link-hover: #1d4ed8;
+  --focus: #4c8bf5;
+  --success: #16a34a;
+  --danger: #dc3545;
+  --card-back: #e8e7e2;
+  --card-back-border: #d5d4ce;
+  --card-pip: #cecdc7;
+  --card-front-border: #e2e1db;
+  --shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+
+  color-scheme: light;
+  font-family: 'DM Mono', ui-monospace, monospace;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* --- shared controls ----------------------------------------------------- */
+
+.field {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: var(--surface);
+}
+.field:focus {
+  border-color: var(--focus);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(76 139 245 / 0.18);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn.primary {
+  background: var(--link);
+  color: #fff;
+}
+.btn.primary:hover {
+  background: var(--link-hover);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font-size: 13px;
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
+.link.danger,
+.icon-btn.danger {
+  color: var(--danger);
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 13px;
+  color: #212529;
+  cursor: pointer;
+}
+.icon-btn:hover:not(:disabled) {
+  background: var(--hover);
+}
+.icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+/* --- dropdown ------------------------------------------------------------ */
+
+.dropdown {
+  position: relative;
+}
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 1000;
+  min-width: 220px;
+  max-width: calc(100vw - 16px);
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 13px;
+}
+.dropdown-menu a {
+  display: block;
+  padding: 8px 16px;
+  color: #212529;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.dropdown-menu a:hover {
+  background: var(--hover);
+}
+.dropdown-menu .sep {
+  border-top: 1px solid #e9ecef;
+  margin: 4px 0;
+}
+
+@media (max-width: 768px) {
+  .hide-sm {
+    display: none !important;
+  }
+}
