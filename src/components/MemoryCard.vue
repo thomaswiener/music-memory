@@ -44,7 +44,8 @@ const label = computed(() => {
   >
     <span class="inner">
       <span class="face back">
-        <span class="pip" />
+        <i v-if="solved" class="bi bi-check-lg" />
+        <span v-else class="pip" />
         <small v-if="debug" class="dbg">{{ suffix }}</small>
       </span>
       <span class="face front">
@@ -91,6 +92,11 @@ const label = computed(() => {
 .flipped .inner {
   transform: rotateY(180deg);
 }
+/* A found pair flips once more (180deg -> 360deg) and lands back-side up,
+   now in the player's colour. */
+.solved .inner {
+  transform: rotateY(360deg);
+}
 .face {
   position: absolute;
   inset: 0;
@@ -117,9 +123,9 @@ const label = computed(() => {
   border: 1.5px solid var(--card-front-border);
   transform: rotateY(180deg);
 }
-.solved .front {
+.solved .back {
   background: color-mix(in srgb, var(--player) 90%, white);
-  /*border-color: color-mix(in srgb, var(--player) 45%, white);*/
+  border-color: transparent;
   color: #ffffff;
 }
 .playing .front i {
