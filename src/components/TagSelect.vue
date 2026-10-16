@@ -100,7 +100,7 @@ function setTag(tag, checked) {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
 }
 .menu label:hover,
@@ -123,6 +123,6 @@ function setTag(tag, checked) {
   background: none;
   color: var(--danger);
   font: inherit;
-  font-size: 12px;
+  font-size: 14px;
 }
 </style>
