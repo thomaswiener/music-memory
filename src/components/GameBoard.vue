@@ -62,7 +62,7 @@ import { playerColor } from '../lib/players'
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted-2);
