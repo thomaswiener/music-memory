@@ -135,7 +135,7 @@ const label = computed(() => {
   position: absolute;
   bottom: 3px;
   right: 5px;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
 }
 .shake {
