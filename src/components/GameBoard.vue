@@ -71,9 +71,10 @@ import { playerColor } from '../lib/players'
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  transition: background 0.2s, color 0.2s;
+  padding: 6px 10px 4px;
+  /* Transparent until active, so the row doesn't shift between turns. */
+  border-top: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
 }
 .stats strong {
   color: var(--ink);
@@ -86,8 +87,8 @@ import { playerColor } from '../lib/players'
   background: var(--player);
 }
 .stats li.active {
-  background: color-mix(in srgb, var(--player) 12%, transparent);
   color: var(--ink);
+  border-top-color: var(--player);
 }
 .board {
   /* Cards shrink to fit narrow screens instead of overflowing. */
