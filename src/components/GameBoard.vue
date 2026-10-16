@@ -73,7 +73,7 @@ import { playerColor } from '../lib/players'
   gap: 8px;
   padding: 6px 10px 4px;
   /* Transparent until active, so the row doesn't shift between turns. */
-  border-top: 2px solid transparent;
+  border-top: 1px solid transparent;
   transition: color 0.2s, border-color 0.2s;
 }
 .stats strong {
