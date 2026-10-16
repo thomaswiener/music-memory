@@ -1,6 +1,6 @@
 // Game state machine: deck, turns, scoring, persistence.
 
-import { computed, reactive, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { TRACKS, TRACK_BY_URI } from '../data/tracks'
 import { buildDeck, filterTracks, leaders } from '../lib/game'
 import { load, save } from '../lib/storage'
@@ -45,7 +45,20 @@ export const winners = computed(() => leaders(scores.value))
 export const isFaceUp = (card) => game.selection.includes(card.id) || card.uri in game.solvedBy
 export const trackOf = (card) => TRACK_BY_URI.get(card.uri)
 
+/** True while the "start a new game?" dialog is open. */
+export const confirmingNewGame = ref(false)
+
+/**
+ * New game from the nav / board button. Asks first if a game is in
+ * progress; a fresh or finished board is replaced straight away.
+ */
+export function requestNewGame() {
+  if (game.round > 0 && !won.value) confirmingNewGame.value = true
+  else newGame()
+}
+
 export function newGame() {
+  confirmingNewGame.value = false
   epoch++
   stopPlayback()
   const pool = filterTracks(TRACKS, settings.include, settings.exclude)

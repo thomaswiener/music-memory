@@ -6,8 +6,9 @@ import GameBoard from './components/GameBoard.vue'
 import SettingsModal from './components/SettingsModal.vue'
 import WinModal from './components/WinModal.vue'
 import AppToast from './components/AppToast.vue'
+import NewGameConfirm from './components/NewGameConfirm.vue'
 import { spotify, bootstrap, refreshDevices } from './composables/useSpotify'
-import { newGame, restoreOrNewGame } from './composables/useGame'
+import { requestNewGame, restoreOrNewGame } from './composables/useGame'
 import { settings } from './store'
 import { setLogLevel } from './lib/logger'
 
@@ -27,7 +28,7 @@ onBeforeUnmount(() => window.removeEventListener('focus', onFocus))
 </script>
 
 <template>
-  <TopNav @new-game="newGame" @open-settings="settingsOpen = true" />
+  <TopNav @new-game="requestNewGame" @open-settings="settingsOpen = true" />
 
   <main class="game">
     <div v-if="spotify.phase === 'loading'" class="loading" aria-busy="true">Loading…</div>
@@ -37,6 +38,7 @@ onBeforeUnmount(() => window.removeEventListener('focus', onFocus))
 
   <SettingsModal :open="settingsOpen" @close="settingsOpen = false" />
   <WinModal />
+  <NewGameConfirm />
   <AppToast />
 </template>
 
