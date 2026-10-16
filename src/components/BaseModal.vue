@@ -94,7 +94,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
 }
 .title {
   margin: 0 0 1.25rem;
-  font-size: 0.9rem;
+  font-size: calc(0.9rem + 2px);
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;

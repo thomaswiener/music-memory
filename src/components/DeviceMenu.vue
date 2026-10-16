@@ -76,7 +76,7 @@ function choose(id) {
 }
 .type {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 .bi-check-lg {
   margin-left: auto;
@@ -84,7 +84,7 @@ function choose(id) {
 .heading,
 .empty {
   padding: 6px 16px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   white-space: normal;
 }

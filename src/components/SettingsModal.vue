@@ -157,13 +157,13 @@ legend,
 h3 {
   display: block;
   margin-bottom: 6px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
 .label a {
   margin-left: 6px;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
 }
 .players {
   display: grid;
@@ -200,11 +200,16 @@ h3 {
 }
 .hint {
   margin: -0.5rem 0 0;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
 }
 .hint.warn {
   color: var(--danger);
+}
+/* Shared .btn/.link are 13px; settings uses +2px. */
+.settings :is(.btn, .link),
+.profile .link {
+  font-size: 15px;
 }
 .actions {
   display: flex;
@@ -214,7 +219,7 @@ h3 {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--line);
-  font-size: 13px;
+  font-size: 15px;
 }
 .who {
   display: flex;

@@ -43,7 +43,7 @@ defineEmits(['new-game', 'open-settings'])
   padding: 0 20px;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
