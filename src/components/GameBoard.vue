@@ -1,7 +1,7 @@
 <script setup>
 import MemoryCard from './MemoryCard.vue'
 import {
-  game, scores, solvedPairs, totalPairs, isFaceUp, trackOf, flip, newGame,
+  game, scores, solvedPairs, totalPairs, isFaceUp, trackOf, flip, requestNewGame,
 } from '../composables/useGame'
 import { settings } from '../store'
 import { playerColor } from '../lib/players'
@@ -17,8 +17,7 @@ import { playerColor } from '../lib/players'
         :style="{ '--player': playerColor(p.index) }"
         :aria-current="p.index === game.currentPlayer && scores.length > 1 ? 'true' : undefined"
       >
-        <span class="dot" />
-        {{ p.name }} <strong>{{ p.solved }}</strong>
+        <span class="name">{{ p.name }}</span> <strong>{{ p.solved }}</strong>
       </li>
       <li class="pairs">pairs <strong>{{ solvedPairs }}/{{ totalPairs }}</strong></li>
     </ul>
@@ -41,7 +40,7 @@ import { playerColor } from '../lib/players'
       />
     </div>
 
-    <button type="button" class="reset" @click="newGame">New game</button>
+    <button type="button" class="reset" @click="requestNewGame">New game</button>
   </section>
 </template>
 
@@ -80,15 +79,16 @@ import { playerColor } from '../lib/players'
   color: var(--ink);
   font-weight: 500;
 }
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--player);
+.name {
+  color: var(--player);
 }
 .stats li.active {
   color: var(--ink);
   border-top-color: var(--player);
+}
+.stats li.active .name,
+.stats li.active strong {
+  font-weight: 700;
 }
 .board {
   /* Cards shrink to fit narrow screens instead of overflowing. */
