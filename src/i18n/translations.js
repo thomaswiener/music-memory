@@ -134,6 +134,15 @@ export default {
       close: 'Close',
       dismiss: 'Dismiss',
     },
+    legal: {
+      button: 'Legal notice & privacy',
+      title: 'Legal',
+      imprint: 'Legal notice',
+      privacy: 'Privacy',
+      translationNote: 'This English version is a translation for convenience; only the German version is legally binding.',
+      showGerman: 'German version',
+      showTranslation: 'English version',
+    },
     errors: {
       loginCancelled: 'Spotify login was cancelled.',
       loginFailed: 'Spotify login failed: {detail}',
@@ -273,6 +282,15 @@ export default {
     common: {
       close: 'Schließen',
       dismiss: 'Ausblenden',
+    },
+    legal: {
+      button: 'Impressum & Datenschutz',
+      title: 'Rechtliches',
+      imprint: 'Impressum',
+      privacy: 'Datenschutz',
+      translationNote: 'Die englische Fassung ist eine Übersetzung; rechtlich maßgeblich ist nur die deutsche Fassung.',
+      showGerman: 'Deutsche Fassung',
+      showTranslation: 'Englische Fassung',
     },
     errors: {
       loginCancelled: 'Die Spotify-Anmeldung wurde abgebrochen.',
@@ -415,6 +433,15 @@ export default {
       close: 'Fermer',
       dismiss: 'Masquer',
     },
+    legal: {
+      button: 'Mentions légales & confidentialité',
+      title: 'Informations légales',
+      imprint: 'Mentions légales',
+      privacy: 'Confidentialité',
+      translationNote: `Le texte ci-dessous est une traduction anglaise${NBSP}; seule la version allemande fait foi.`,
+      showGerman: 'Version allemande',
+      showTranslation: 'Version anglaise',
+    },
     errors: {
       loginCancelled: 'La connexion à Spotify a été annulée.',
       loginFailed: `Échec de la connexion à Spotify${NBSP}: {detail}`,
@@ -556,6 +583,15 @@ export default {
     common: {
       close: 'Cerrar',
       dismiss: 'Descartar',
+    },
+    legal: {
+      button: 'Aviso legal y privacidad',
+      title: 'Información legal',
+      imprint: 'Aviso legal',
+      privacy: 'Privacidad',
+      translationNote: 'El texto siguiente es una traducción al inglés; solo la versión alemana es jurídicamente vinculante.',
+      showGerman: 'Versión alemana',
+      showTranslation: 'Versión inglesa',
     },
     errors: {
       loginCancelled: 'Se canceló el inicio de sesión en Spotify.',
