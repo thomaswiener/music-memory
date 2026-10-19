@@ -1,5 +1,6 @@
 <script setup>
 import { nextTick, onBeforeUnmount, ref, useId, watch } from 'vue'
+import { t } from '../i18n'
 
 const props = defineProps({
   open: Boolean,
@@ -45,7 +46,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
           :aria-labelledby="title ? titleId : undefined"
           tabindex="-1"
         >
-          <button v-if="variant === 'sheet'" class="close" type="button" aria-label="Close" @click="emit('close')">
+          <button v-if="variant === 'sheet'" class="close" type="button" :aria-label="t('common.close')" @click="emit('close')">
             <i class="bi bi-x-lg" />
           </button>
           <h2 v-if="title" :id="titleId" class="title">{{ title }}</h2>

@@ -2,19 +2,25 @@
 import { computed } from 'vue'
 import BaseModal from './BaseModal.vue'
 import { confirmingNewGame, newGame, game, solvedPairs, totalPairs } from '../composables/useGame'
+import { t } from '../i18n'
 
 const progress = computed(
-  () => `${solvedPairs.value} of ${totalPairs.value} pairs found in ${game.round} ${game.round === 1 ? 'round' : 'rounds'}`,
+  () =>
+    t('confirm.progress', {
+      found: solvedPairs.value,
+      total: totalPairs.value,
+      rounds: t('count.rounds', { count: game.round }),
+    }),
 )
 const cancel = () => (confirmingNewGame.value = false)
 </script>
 
 <template>
-  <BaseModal :open="confirmingNewGame" title="Start a new game?" variant="dialog" @close="cancel">
-    <p class="msg">The current game ({{ progress }}) will be lost.</p>
+  <BaseModal :open="confirmingNewGame" :title="t('confirm.title')" variant="dialog" @close="cancel">
+    <p class="msg">{{ t('confirm.message', { progress }) }}</p>
     <div class="actions">
-      <button type="button" class="btn secondary" @click="cancel">Keep playing</button>
-      <button type="button" class="btn primary" @click="newGame">New game</button>
+      <button type="button" class="btn secondary" @click="cancel">{{ t('confirm.keep') }}</button>
+      <button type="button" class="btn primary" @click="newGame">{{ t('confirm.confirm') }}</button>
     </div>
   </BaseModal>
 </template>

@@ -11,6 +11,7 @@ import { spotify, bootstrap, refreshDevices } from './composables/useSpotify'
 import { requestNewGame, restoreOrNewGame } from './composables/useGame'
 import { settings } from './store'
 import { setLogLevel } from './lib/logger'
+import { t } from './i18n'
 
 const settingsOpen = ref(false)
 
@@ -31,7 +32,7 @@ onBeforeUnmount(() => window.removeEventListener('focus', onFocus))
   <TopNav @new-game="requestNewGame" @open-settings="settingsOpen = true" />
 
   <main class="game">
-    <div v-if="spotify.phase === 'loading'" class="loading" aria-busy="true">Loading…</div>
+    <div v-if="spotify.phase === 'loading'" class="loading" aria-busy="true">{{ t('app.loading') }}</div>
     <SetupGuide v-else-if="spotify.phase !== 'ready'" />
     <GameBoard v-else />
   </main>

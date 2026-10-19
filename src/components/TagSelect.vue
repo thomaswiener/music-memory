@@ -1,10 +1,11 @@
 <script setup>
 import { computed, useId } from 'vue'
 import { useDropdown } from '../composables/useDropdown'
+import { t, tagLabel } from '../i18n'
 
 const props = defineProps({
   options: { type: Array, required: true },
-  placeholder: { type: String, default: 'Select tags' },
+  placeholder: { type: String, default: '' },
   /** tags selected in the *other* filter, shown disabled to avoid contradictions */
   disabledOptions: { type: Array, default: () => [] },
 })
@@ -14,7 +15,9 @@ const model = defineModel({ type: Array, default: () => [] })
 const uid = useId()
 const { open, root, toggle } = useDropdown()
 
-const label = computed(() => (model.value.length ? model.value.join(', ') : props.placeholder))
+const label = computed(() =>
+  model.value.length ? model.value.map(tagLabel).join(', ') : props.placeholder || t('tagSelect.placeholder'),
+)
 
 function setTag(tag, checked) {
   model.value = checked ? [...model.value, tag].sort() : model.value.filter((t) => t !== tag)
@@ -44,12 +47,12 @@ function setTag(tag, checked) {
             :disabled="disabledOptions.includes(tag)"
             @change="setTag(tag, $event.target.checked)"
           />
-          {{ tag }}
+          {{ tagLabel(tag) }}
         </label>
       </li>
       <li v-if="model.length" class="sep" />
       <li v-if="model.length">
-        <button type="button" class="clear" @click="model = []">Clear selection</button>
+        <button type="button" class="clear" @click="model = []">{{ t('tagSelect.clear') }}</button>
       </li>
     </ul>
   </div>

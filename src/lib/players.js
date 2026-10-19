@@ -1,3 +1,5 @@
+import { t } from '../i18n'
+
 const PALETTE = [
     '#373F51',
     '#008DD5',
@@ -22,7 +24,7 @@ export function defaultPlayerName(index) {
     name = String.fromCharCode(65 + (n % 26)) + name
     n = Math.floor(n / 26) - 1
   } while (n >= 0)
-  return `Player ${name}`
+  return t('settings.defaultPlayer', { letter: name })
 }
 
 export function normalizePlayers(players) {

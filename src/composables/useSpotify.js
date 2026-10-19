@@ -5,13 +5,15 @@ import * as sp from '../lib/spotify'
 import { settings, notify } from '../store'
 import { log } from '../lib/logger'
 import { sleep } from '../lib/sleep'
+import { errorText } from '../i18n'
 
 export const spotify = reactive({
   /** 'loading' | 'setup' (no client ID) | 'login' (no session) | 'ready' */
   phase: 'loading',
   profile: null,
   devices: [],
-  error: '',
+  /** last login/session error (a SpotifyError), shown on the connect screen */
+  error: null,
 })
 
 const api = sp.createClient(() => settings.clientId)
@@ -41,7 +43,7 @@ export async function bootstrap() {
       await sp.completeLogin(settings.clientId, params)
     } catch (err) {
       log.warn('login failed', err)
-      spotify.error = err.message
+      spotify.error = err
     } finally {
       // Drop ?code from the address bar so a reload doesn't replay it.
       window.history.replaceState(null, '', import.meta.env.BASE_URL)
@@ -53,15 +55,16 @@ export async function bootstrap() {
 }
 
 export function connect() {
-  spotify.error = ''
+  spotify.error = null
   return sp.beginLogin(settings.clientId)
 }
 
-export function disconnect(message = '') {
+/** `error` (optional) is shown on the connect screen, e.g. why the session ended. */
+export function disconnect(error = null) {
   sp.clearSession()
   spotify.profile = null
   spotify.devices = []
-  spotify.error = message
+  spotify.error = error
   spotify.phase = nextPhase()
 }
 
@@ -69,10 +72,10 @@ export function disconnect(message = '') {
 export function handleError(err) {
   log.error(err)
   if (err?.status === 401) {
-    disconnect(err.message)
+    disconnect(err)
     return
   }
-  notify(err?.message ?? String(err), 'error')
+  notify(errorText(err), 'error')
 }
 
 async function loadProfile() {
@@ -112,10 +115,7 @@ export function selectDevice(id) {
 export async function playSnippet(track, { keepPlaying = false, shouldContinue = () => true } = {}) {
   if (!deviceActive.value) await refreshDevices()
   if (!settings.deviceId) {
-    throw new sp.SpotifyError(
-      'No Spotify device found. Open Spotify on a device, then pick it in the speaker menu.',
-      { status: 404, code: 'no_device' },
-    )
+    throw new sp.SpotifyError('noDevice', { status: 404, code: 'no_device' })
   }
   try {
     await api.play(settings.deviceId, track.uri, track.start)

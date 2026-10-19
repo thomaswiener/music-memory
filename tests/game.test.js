@@ -1,7 +1,13 @@
-import { describe, expect, it } from 'vitest'
-import { buildDeck, filterTracks, joinNames, leaders, parseBoardSize, shuffle } from '../src/lib/game'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { buildDeck, filterTracks, leaders, parseBoardSize, shuffle } from '../src/lib/game'
 import { defaultPlayerName, normalizePlayers, playerColor } from '../src/lib/players'
 import { TRACKS, TAGS } from '../src/data/tracks'
+import { i18n } from '../src/i18n'
+
+// Default player names are translated; pin English regardless of the machine's locale.
+beforeEach(() => {
+  i18n.locale = 'en'
+})
 
 const track = (id, tags) => ({ uri: `spotify:track:${id}`, tags })
 const sample = [track('a', ['90s', 'house']), track('b', ['80s']), track('c', ['90s', 'explicit']), track('d', ['deutsch'])]
@@ -63,10 +69,6 @@ describe('scoring helpers', () => {
   it('finds leaders including ties', () => {
     const scores = [{ name: 'A', solved: 3 }, { name: 'B', solved: 5 }, { name: 'C', solved: 5 }]
     expect(leaders(scores).map((s) => s.name)).toEqual(['B', 'C'])
-  })
-  it('joins names', () => {
-    expect(joinNames(['A'])).toBe('A')
-    expect(joinNames(['A', 'B', 'C'])).toBe('A, B and C')
   })
 })
 

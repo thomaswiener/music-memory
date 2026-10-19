@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import { settings } from '../store'
 import { spotify, connect } from '../composables/useSpotify'
 import { redirectUri } from '../lib/spotify'
+import { t, errorText } from '../i18n'
+import I18nT from '../i18n/I18nT'
 
 const clientId = ref(settings.clientId)
 const copied = ref(false)
@@ -31,53 +33,56 @@ function saveAndConnect() {
     <!-- Client ID known, just no session: one-click reconnect -->
     <template v-if="spotify.phase === 'login'">
       <h1>Music Memory</h1>
-      <p>Connect your Spotify account to start playing.</p>
-      <p v-if="spotify.error" class="error" role="alert">{{ spotify.error }}</p>
+      <p>{{ t('setup.connectIntro') }}</p>
+      <p v-if="spotify.error" class="error" role="alert">{{ errorText(spotify.error) }}</p>
       <button type="button" class="btn primary" @click="connect">
-        <i class="bi bi-spotify" /> Connect Spotify
+        <i class="bi bi-spotify" /> {{ t('setup.connect') }}
       </button>
-      <button type="button" class="link" @click="settings.clientId = ''">Use a different Client ID</button>
+      <button type="button" class="link" @click="settings.clientId = ''">{{ t('setup.otherClientId') }}</button>
     </template>
 
     <template v-else>
       <h1>Music Memory</h1>
+      <p>{{ t('setup.intro') }}</p>
       <p>
-        A memory match game played by ear: flip two tiles, each plays a short music snippet, and pair the
-        ones that sound the same. It turns visual recall into a test of musical memory.
-      </p>
-      <p>
-        <strong>It needs your own Spotify app and Spotify Premium, and plays music on a device connected to
-        your account.</strong> Set it up once:
+        <strong>{{ t('setup.requirements') }}</strong> {{ t('setup.setupOnce') }}
       </p>
 
       <ol class="steps">
         <li>
-          Open the <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">Spotify Developer Dashboard</a>
-          and log in.
+          <I18nT k="setup.step1">
+            <template #dashboard>
+              <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">{{ t('setup.dashboard') }}</a>
+            </template>
+          </I18nT>
         </li>
-        <li>Click <em>Create app</em>.</li>
         <li>
-          Fill in:
+          <I18nT k="setup.step2"><template #createApp><em>Create app</em></template></I18nT>
+        </li>
+        <li>
+          {{ t('setup.step3') }}
+          <!-- Spotify's form labels, kept in English to match the dashboard -->
           <dl>
             <dt>App name</dt><dd>music-memory</dd>
             <dt>App description</dt><dd>music-memory</dd>
             <dt>Redirect URI</dt>
             <dd class="uri">
               <code>{{ uri }}</code>
-              <button type="button" class="link" @click="copyUri">{{ copied ? 'copied' : 'copy' }}</button>
+              <button type="button" class="link" @click="copyUri">{{ copied ? t('setup.copied') : t('setup.copy') }}</button>
             </dd>
-            <dt>APIs used</dt><dd>Web API and Web Playback SDK</dd>
+            <dt>APIs used</dt><dd>Web API, Web Playback SDK</dd>
           </dl>
         </li>
-        <li>Accept the terms and click <em>Save</em>.</li>
         <li>
-          Open the app, copy its <em>Client ID</em> and paste it below. You'll then log in with your Spotify
-          account. Keep Spotify open on a device so there's somewhere to play.
+          <I18nT k="setup.step4"><template #save><em>Save</em></template></I18nT>
+        </li>
+        <li>
+          <I18nT k="setup.step5"><template #clientId><em>Client ID</em></template></I18nT>
         </li>
       </ol>
 
       <form class="client-form" @submit.prevent="saveAndConnect">
-        <label for="client-id">Spotify Client ID</label>
+        <label for="client-id">{{ t('setup.clientIdLabel') }}</label>
         <div class="row">
           <input
             id="client-id"
@@ -85,13 +90,13 @@ function saveAndConnect() {
             class="field"
             autocomplete="off"
             spellcheck="false"
-            placeholder="e.g. 1a2b3c4d5e6f…"
+            :placeholder="t('setup.placeholder')"
             required
           />
-          <button type="submit" class="btn primary">Save &amp; connect</button>
+          <button type="submit" class="btn primary">{{ t('setup.saveConnect') }}</button>
         </div>
       </form>
-      <p v-if="spotify.error" class="error" role="alert">{{ spotify.error }}</p>
+      <p v-if="spotify.error" class="error" role="alert">{{ errorText(spotify.error) }}</p>
     </template>
   </section>
 </template>
