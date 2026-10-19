@@ -1,5 +1,6 @@
 <script setup>
 import DeviceMenu from './DeviceMenu.vue'
+import LanguageMenu from './LanguageMenu.vue'
 import { spotify } from '../composables/useSpotify'
 import { game } from '../composables/useGame'
 import { settings } from '../store'
@@ -24,6 +25,7 @@ defineEmits(['new-game', 'open-settings'])
         <span class="switch" aria-hidden="true" />
         <span class="label">{{ t('nav.debug') }}</span>
       </label>
+      <LanguageMenu />
       <DeviceMenu v-if="spotify.phase === 'ready'" />
       <button type="button" class="icon-btn" :aria-label="t('nav.settings')" :title="t('nav.settings')" @click="$emit('open-settings')">
         <i class="bi bi-sliders" />
@@ -47,6 +49,10 @@ defineEmits(['new-game', 'open-settings'])
   font-size: 14px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+.brand,
+.rounds {
+  white-space: nowrap;
 }
 .brand {
   font-weight: 500;
@@ -130,8 +136,28 @@ defineEmits(['new-game', 'open-settings'])
 }
 @media (max-width: 480px) {
   .topnav {
-    padding: 0 8px 0 16px;
-    letter-spacing: 0.1em;
+    gap: 8px;
+    padding: 0 6px 0 16px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+  .right {
+    gap: 0;
+  }
+  /* three icon buttons (language, device, settings) need to fit on a phone */
+  .right :deep(.icon-btn) {
+    width: 36px;
+  }
+}
+@media (max-width: 360px) {
+  .sep {
+    display: none;
+  }
+}
+@media (max-width: 340px) {
+  .topnav {
+    font-size: 12px;
+    letter-spacing: 0.04em;
   }
 }
 </style>
