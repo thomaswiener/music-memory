@@ -54,7 +54,7 @@ export const confirmingNewGame = ref(false)
  * progress; a fresh or finished board is replaced straight away.
  */
 export function requestNewGame() {
-  if (game.round > 0 && !won.value) confirmingNewGame.value = true
+  if (!won.value) confirmingNewGame.value = true
   else newGame()
 }
 
