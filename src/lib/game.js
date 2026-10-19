@@ -54,8 +54,3 @@ export function leaders(scores) {
   const best = Math.max(0, ...scores.map((s) => s.solved))
   return scores.filter((s) => s.solved === best)
 }
-
-export function joinNames(names) {
-  if (names.length <= 1) return names[0] ?? ''
-  return `${names.slice(0, -1).join(', ')} and ${names.at(-1)}`
-}

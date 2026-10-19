@@ -29,6 +29,8 @@ src/
   lib/spotify.js           PKCE auth, token refresh, Web API client
   lib/players.js           player names and colours
   lib/storage.js           safe localStorage/sessionStorage wrapper
+  i18n/translations.js     all UI texts (de, en, fr, es)
+  i18n/index.js            t(), language detection and switch
   store.js                 persisted settings + toast notices
   composables/useSpotify.js  connection phase, profile, devices, snippet playback
   composables/useGame.js     game state machine, turns, persistence
@@ -47,3 +49,19 @@ t('<spotify track id>', startMs, durationMs, 'Artist', 'Title', ['90s', 'house']
 ```
 
 Tags are picked up automatically by the include/exclude filters.
+
+## Translations
+
+All UI text lives in `src/i18n/translations.js`, one block per language
+(`de`, `en`, `fr`, `es`). The app starts in the browser's language (falling back
+to English) and remembers the choice made under Settings → Language.
+
+- Use texts in components with `t('settings.title')`; parameters fill
+  `{placeholders}`: `t('device.playingOn', { name })`.
+- Plurals are written as `{ one: '…', other: '…' }` and picked from `count`:
+  `t('count.pairs', { count: 3 })`.
+- Sentences containing a link or emphasis use `<I18nT k="…">` with a named slot
+  per placeholder, so word order can differ per language.
+- To add a language, copy the `en` block, translate it and add it to
+  `LANGUAGES` in `src/i18n/index.js`. `npm test` checks that every language has
+  the same keys and placeholders as English.

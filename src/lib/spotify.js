@@ -18,10 +18,16 @@ const VERIFIER_KEY = 'mm:pkce_verifier'
 const STATE_KEY = 'mm:pkce_state'
 const REFRESH_MARGIN_MS = 60_000
 
+/**
+ * Carries an i18n key (see `errors.*` in src/i18n/translations.js) instead of
+ * display text, so the UI shows it in the current language via errorText().
+ */
 export class SpotifyError extends Error {
-  constructor(message, { status = 0, code = '' } = {}) {
-    super(message)
+  constructor(i18nKey, { status = 0, code = '', params = {} } = {}) {
+    super(i18nKey)
     this.name = 'SpotifyError'
+    this.i18nKey = i18nKey
+    this.params = params
     this.status = status
     this.code = code
   }
@@ -76,13 +82,12 @@ export async function completeLogin(clientId, params) {
 
   const error = params.get('error')
   if (error) {
-    throw new SpotifyError(
-      error === 'access_denied' ? 'Spotify login was cancelled.' : `Spotify login failed: ${error}`,
-      { code: error },
-    )
+    throw error === 'access_denied'
+      ? new SpotifyError('loginCancelled', { code: error })
+      : new SpotifyError('loginFailed', { code: error, params: { detail: error } })
   }
   if (!verifier || !expectedState || params.get('state') !== expectedState) {
-    throw new SpotifyError('Login could not be verified. Please connect again.', { code: 'state_mismatch' })
+    throw new SpotifyError('loginUnverified', { code: 'state_mismatch' })
   }
 
   storeToken(
@@ -106,9 +111,10 @@ async function tokenRequest(body) {
   })
   const data = await res.json().catch(() => ({}))
   if (!res.ok || !data.access_token) {
-    throw new SpotifyError(data.error_description || data.error || `Token request failed (${res.status})`, {
+    throw new SpotifyError('tokenFailed', {
       status: res.status === 400 ? 401 : res.status, // invalid_grant ⇒ treat as logged out
       code: data.error || 'token_error',
+      params: { detail: data.error_description || data.error || res.status },
     })
   }
   return data
@@ -135,9 +141,9 @@ let refreshInFlight = null
 /** Returns a valid access token, refreshing at most once concurrently. */
 export async function getAccessToken(clientId) {
   const token = load(TOKEN_KEY, null)
-  if (!token?.accessToken) throw new SpotifyError('Not connected to Spotify.', { status: 401, code: 'no_session' })
+  if (!token?.accessToken) throw new SpotifyError('notConnected', { status: 401, code: 'no_session' })
   if (Date.now() < token.expiresAt - REFRESH_MARGIN_MS) return token.accessToken
-  if (!token.refreshToken) throw new SpotifyError('Spotify session expired.', { status: 401, code: 'no_refresh' })
+  if (!token.refreshToken) throw new SpotifyError('sessionExpired', { status: 401, code: 'no_refresh' })
 
   refreshInFlight ??= tokenRequest({
     client_id: clientId,
@@ -156,13 +162,14 @@ export async function getAccessToken(clientId) {
 
 // ----------------------------------------------------------------- API ----
 
-function friendlyMessage(status, apiMessage, reason) {
-  if (status === 401) return 'Spotify session expired. Please connect again.'
-  if (status === 403 && reason === 'PREMIUM_REQUIRED') return 'Playback control requires Spotify Premium.'
-  if (status === 403) return `Spotify refused the request${apiMessage ? `: ${apiMessage}` : '.'}`
-  if (status === 404) return 'No active Spotify device. Open Spotify on a device, then pick it in the speaker menu.'
-  if (status === 429) return 'Spotify rate limit reached. Wait a moment and try again.'
-  return apiMessage || `Spotify request failed (${status}).`
+/** Maps an API failure to an i18n key + params (texts in translations.js). */
+function errorKey(status, apiMessage, reason) {
+  if (status === 401) return ['sessionExpired']
+  if (status === 403 && reason === 'PREMIUM_REQUIRED') return ['premiumRequired']
+  if (status === 403) return apiMessage ? ['refusedDetail', { detail: apiMessage }] : ['refused']
+  if (status === 404) return ['noActiveDevice']
+  if (status === 429) return ['rateLimited']
+  return apiMessage ? ['apiError', { detail: apiMessage }] : ['requestFailed', { status }]
 }
 
 export function createClient(getClientId) {
@@ -191,10 +198,8 @@ export function createClient(getClientId) {
     if (!res.ok) {
       if (res.status === 401) clearSession()
       const reason = data?.error?.reason ?? ''
-      throw new SpotifyError(friendlyMessage(res.status, data?.error?.message, reason), {
-        status: res.status,
-        code: reason,
-      })
+      const [key, params] = errorKey(res.status, data?.error?.message, reason)
+      throw new SpotifyError(key, { status: res.status, code: reason, params })
     }
     return data
   }

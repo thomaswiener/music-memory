@@ -8,6 +8,7 @@ import { BOARD_SIZES, filterTracks, parseBoardSize } from '../lib/game'
 import { playerColor, defaultPlayerName, normalizePlayers } from '../lib/players'
 import { spotify, disconnect } from '../composables/useSpotify'
 import { newGame } from '../composables/useGame'
+import { t, i18n, LANGUAGES } from '../i18n'
 
 const props = defineProps({ open: Boolean })
 const emit = defineEmits(['close'])
@@ -35,9 +36,13 @@ const pool = computed(() => filterTracks(TRACKS, draft.include, draft.exclude).l
 const boardHint = computed(() => {
   const dims = parseBoardSize(draft.boardSize)
   const pairs = dims ? Math.min(dims.pairs, pool.value) : pool.value
-  if (pool.value === 0) return 'No tracks match these filters.'
-  const shrunk = dims && pool.value < dims.pairs ? ` (board shrinks: only ${pool.value} tracks match)` : ''
-  return `${pool.value} tracks match → ${pairs} pairs, ${pairs * 2} cards${shrunk}`
+  if (pool.value === 0) return t('settings.hintNone')
+  const shrunk = dims && pool.value < dims.pairs
+  return t(shrunk ? 'settings.hintShrunk' : 'settings.hint', {
+    tracks: t('count.tracks', { count: pool.value }),
+    pairs: t('count.pairs', { count: pairs }),
+    cards: t('count.cards', { count: pairs * 2 }),
+  })
 })
 
 const addPlayer = () => draft.players.push({ name: defaultPlayerName(draft.players.length) })
@@ -56,17 +61,17 @@ function apply() {
 </script>
 
 <template>
-  <BaseModal :open="open" title="Settings" @close="emit('close')">
+  <BaseModal :open="open" :title="t('settings.title')" @close="emit('close')">
     <form class="settings" @submit.prevent="apply">
       <fieldset>
-        <legend>Players</legend>
+        <legend>{{ t('settings.players') }}</legend>
         <ul class="players">
           <li v-for="(player, i) in draft.players" :key="i">
             <span class="dot" :style="{ background: playerColor(i) }" />
             <input
               v-model="player.name"
               class="field"
-              :aria-label="`Player ${i + 1} name`"
+              :aria-label="t('settings.playerName', { n: i + 1 })"
               :placeholder="defaultPlayerName(i)"
               maxlength="24"
             />
@@ -74,37 +79,43 @@ function apply() {
               type="button"
               class="icon-btn danger"
               :disabled="draft.players.length === 1"
-              :aria-label="`Remove ${player.name || defaultPlayerName(i)}`"
+              :aria-label="t('settings.removePlayer', { name: player.name || defaultPlayerName(i) })"
               @click="removePlayer(i)"
             >
               <i class="bi bi-trash3" />
             </button>
           </li>
         </ul>
-        <button type="button" class="link" @click="addPlayer"><i class="bi bi-plus-lg" /> Add player</button>
+        <button type="button" class="link" @click="addPlayer"><i class="bi bi-plus-lg" /> {{ t('settings.addPlayer') }}</button>
       </fieldset>
 
       <div class="grid">
         <div>
-          <span class="label">Include (genres/decades)</span>
-          <TagSelect v-model="draft.include" :options="TAGS" :disabled-options="draft.exclude" placeholder="All tracks" />
+          <span class="label">{{ t('settings.include') }}</span>
+          <TagSelect v-model="draft.include" :options="TAGS" :disabled-options="draft.exclude" :placeholder="t('settings.includeAll')" />
         </div>
         <div>
-          <span class="label">Exclude</span>
-          <TagSelect v-model="draft.exclude" :options="TAGS" :disabled-options="draft.include" placeholder="Nothing excluded" />
+          <span class="label">{{ t('settings.exclude') }}</span>
+          <TagSelect v-model="draft.exclude" :options="TAGS" :disabled-options="draft.include" :placeholder="t('settings.excludeNone')" />
         </div>
         <div>
-          <label class="label" for="board-size">Board size</label>
+          <label class="label" for="board-size">{{ t('settings.boardSize') }}</label>
           <select id="board-size" v-model="draft.boardSize" class="field">
             <option v-for="size in BOARD_SIZES" :key="size" :value="size">
-              {{ size === 'auto' ? 'Auto (all matching tracks)' : size.replace('x', ' × ') }}
+              {{ size === 'auto' ? t('settings.boardAuto') : size.replace('x', ' × ') }}
             </option>
           </select>
         </div>
         <div>
+          <label class="label" for="language">{{ t('settings.language') }}</label>
+          <select id="language" v-model="i18n.locale" class="field">
+            <option v-for="lang in LANGUAGES" :key="lang.code" :value="lang.code" :lang="lang.code">{{ lang.label }}</option>
+          </select>
+        </div>
+        <div class="span-2">
           <label class="label" for="settings-client-id">
-            Spotify Client ID
-            <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">Dashboard</a>
+            {{ t('settings.clientId') }}
+            <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">{{ t('settings.dashboard') }}</a>
           </label>
           <input id="settings-client-id" v-model="draft.clientId" class="field" autocomplete="off" spellcheck="false" />
         </div>
@@ -112,12 +123,12 @@ function apply() {
       <p class="hint" :class="{ warn: pool === 0 }">{{ boardHint }}</p>
 
       <div class="actions">
-        <button type="submit" class="btn primary" :disabled="pool === 0">Apply and reset</button>
+        <button type="submit" class="btn primary" :disabled="pool === 0">{{ t('settings.apply') }}</button>
       </div>
     </form>
 
     <section v-if="spotify.profile" class="profile">
-      <h3>Logged in as</h3>
+      <h3>{{ t('settings.loggedInAs') }}</h3>
       <div class="who">
         <img
           v-if="spotify.profile.images?.[0]?.url"
@@ -127,16 +138,16 @@ function apply() {
           height="40"
         />
         <dl>
-          <dt>Name</dt><dd>{{ spotify.profile.display_name }}</dd>
-          <dt>User ID</dt><dd>{{ spotify.profile.id }}</dd>
-          <dt v-if="spotify.profile.email">Email</dt><dd v-if="spotify.profile.email">{{ spotify.profile.email }}</dd>
-          <dt>Profile</dt>
+          <dt>{{ t('settings.name') }}</dt><dd>{{ spotify.profile.display_name }}</dd>
+          <dt>{{ t('settings.userId') }}</dt><dd>{{ spotify.profile.id }}</dd>
+          <dt v-if="spotify.profile.email">{{ t('settings.email') }}</dt><dd v-if="spotify.profile.email">{{ spotify.profile.email }}</dd>
+          <dt>{{ t('settings.profile') }}</dt>
           <dd>
             <a :href="spotify.profile.external_urls?.spotify" target="_blank" rel="noopener">{{ spotify.profile.uri }}</a>
           </dd>
         </dl>
       </div>
-      <button type="button" class="link danger" @click="disconnect(); emit('close')">Log out</button>
+      <button type="button" class="link danger" @click="disconnect(); emit('close')">{{ t('settings.logout') }}</button>
     </section>
   </BaseModal>
 </template>
@@ -193,9 +204,15 @@ h3 {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
+.span-2 {
+  grid-column: span 2;
+}
 @media (max-width: 560px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+  .span-2 {
+    grid-column: auto;
   }
 }
 .hint {

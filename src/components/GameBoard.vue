@@ -5,11 +5,12 @@ import {
 } from '../composables/useGame'
 import { settings } from '../store'
 import { playerColor } from '../lib/players'
+import { t } from '../i18n'
 </script>
 
 <template>
   <section class="board-wrap">
-    <ul class="stats" aria-label="Scores">
+    <ul class="stats" :aria-label="t('board.scores')">
       <li
         v-for="p in scores"
         :key="p.index"
@@ -19,7 +20,7 @@ import { playerColor } from '../lib/players'
       >
         <span class="name">{{ p.name }}</span> <strong>{{ p.solved }}</strong>
       </li>
-      <li class="pairs">pairs <strong>{{ solvedPairs }}/{{ totalPairs }}</strong></li>
+      <li class="pairs">{{ t('board.pairs') }} <strong>{{ solvedPairs }}/{{ totalPairs }}</strong></li>
     </ul>
 
     <div class="board" :style="{ '--cols': game.columns }">
@@ -40,7 +41,7 @@ import { playerColor } from '../lib/players'
       />
     </div>
 
-    <button type="button" class="reset" @click="requestNewGame">New game</button>
+    <button type="button" class="reset" @click="requestNewGame">{{ t('board.newGame') }}</button>
   </section>
 </template>
 

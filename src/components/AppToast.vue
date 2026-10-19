@@ -1,5 +1,6 @@
 <script setup>
 import { notice, dismissNotice } from '../store'
+import { t } from '../i18n'
 </script>
 
 <template>
@@ -7,7 +8,7 @@ import { notice, dismissNotice } from '../store'
     <div v-if="notice.message" :key="notice.id" class="toast" :class="notice.kind" role="status" aria-live="polite">
       <i class="bi" :class="notice.kind === 'error' ? 'bi-exclamation-circle' : 'bi-info-circle'" />
       <span>{{ notice.message }}</span>
-      <button type="button" aria-label="Dismiss" @click="dismissNotice"><i class="bi bi-x-lg" /></button>
+      <button type="button" :aria-label="t('common.dismiss')" @click="dismissNotice"><i class="bi bi-x-lg" /></button>
     </div>
   </Transition>
 </template>

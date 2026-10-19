@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useDropdown } from '../composables/useDropdown'
 import { spotify, deviceActive, refreshDevices, selectDevice } from '../composables/useSpotify'
 import { settings } from '../store'
+import { t } from '../i18n'
 
 const { open, root, toggle, close } = useDropdown()
 
@@ -25,15 +26,15 @@ function choose(id) {
       class="icon-btn"
       :class="deviceActive ? 'ok' : 'off'"
       :aria-expanded="open"
-      :title="current ? `Playing on ${current.name}` : 'No playback device'"
-      aria-label="Playback device"
+      :title="current ? t('device.playingOn', { name: current.name }) : t('device.none')"
+      :aria-label="t('device.label')"
       @click="onToggle"
     >
       <i class="bi bi-spotify" />
       <span class="status-dot" />
     </button>
     <ul v-show="open" class="dropdown-menu" role="menu">
-      <li class="heading">Playback device</li>
+      <li class="heading">{{ t('device.label') }}</li>
       <li v-for="device in spotify.devices" :key="device.id">
         <a href="#" role="menuitemradio" :aria-checked="device.id === settings.deviceId" @click.prevent="choose(device.id)">
           <span>{{ device.name }}</span>
@@ -42,11 +43,11 @@ function choose(id) {
         </a>
       </li>
       <li v-if="!spotify.devices.length" class="empty">
-        No device found. Open Spotify on your phone, desktop or speaker.
+        {{ t('device.empty') }}
       </li>
       <li class="sep" />
       <li>
-        <a href="#" @click.prevent="refreshDevices"><i class="bi bi-arrow-clockwise" /> Refresh</a>
+        <a href="#" @click.prevent="refreshDevices"><i class="bi bi-arrow-clockwise" /> {{ t('device.refresh') }}</a>
       </li>
     </ul>
   </div>

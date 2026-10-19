@@ -3,28 +3,29 @@ import DeviceMenu from './DeviceMenu.vue'
 import { spotify } from '../composables/useSpotify'
 import { game } from '../composables/useGame'
 import { settings } from '../store'
+import { t } from '../i18n'
 
 defineEmits(['new-game', 'open-settings'])
 </script>
 
 <template>
   <nav class="topnav">
-    <a href="#" class="brand" title="New game" @click.prevent="$emit('new-game')">Music Memory</a>
+    <a href="#" class="brand" :title="t('nav.newGame')" @click.prevent="$emit('new-game')">Music Memory</a>
     <template v-if="spotify.phase === 'ready'">
       <span class="sep" aria-hidden="true">|</span>
       <span class="rounds" aria-live="polite">
-        <strong>{{ game.round }}</strong> {{ game.round === 1 ? 'round' : 'rounds' }}
+        <strong>{{ game.round }}</strong> {{ t('nav.rounds', { count: game.round }) }}
       </span>
     </template>
 
     <div class="right">
-      <label class="debug hide-sm" title="Show track ids on the cards">
+      <label class="debug hide-sm" :title="t('nav.debugTitle')">
         <input v-model="settings.debug" type="checkbox" role="switch" />
         <span class="switch" aria-hidden="true" />
-        <span class="label">Debug</span>
+        <span class="label">{{ t('nav.debug') }}</span>
       </label>
       <DeviceMenu v-if="spotify.phase === 'ready'" />
-      <button type="button" class="icon-btn" aria-label="Settings" title="Settings" @click="$emit('open-settings')">
+      <button type="button" class="icon-btn" :aria-label="t('nav.settings')" :title="t('nav.settings')" @click="$emit('open-settings')">
         <i class="bi bi-sliders" />
       </button>
     </div>

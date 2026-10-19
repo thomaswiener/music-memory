@@ -7,6 +7,7 @@ import { load, save } from '../lib/storage'
 import { sleep } from '../lib/sleep'
 import { settings, notify } from '../store'
 import { playSnippet, stopPlayback, handleError } from './useSpotify'
+import { t } from '../i18n'
 
 const SAVE_KEY = 'mm:game'
 const REVEAL_MS = 350 // beat after the 2nd snippet before judging the pair
@@ -74,9 +75,9 @@ export function newGame() {
     mismatch: [],
     busy: false,
   })
-  if (deck.pairs === 0) notify('No tracks match your filters. Adjust them in Settings.', 'error', 0)
+  if (deck.pairs === 0) notify(t('notice.noTracks'), 'error', 0)
   else if (deck.pairs < deck.requestedPairs) {
-    notify(`Only ${deck.pairs} tracks match your filters, so the board has ${deck.pairs} pairs.`)
+    notify(t('notice.boardShrunk', { count: deck.pairs }))
   }
 }
 

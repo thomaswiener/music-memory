@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { playerColor } from '../lib/players'
+import { t } from '../i18n'
 
 const props = defineProps({
   card: { type: Object, required: true },
@@ -25,9 +26,12 @@ const icon = computed(() => {
   return 'bi-stop-fill'
 })
 const label = computed(() => {
-  if (solved.value) return `${props.track.artist} – ${props.track.title}, solved by ${props.playerName}`
-  if (props.playing) return `Card ${props.index + 1}, playing`
-  return `Card ${props.index + 1}${props.faceUp ? ', revealed' : ''}`
+  const n = props.index + 1
+  if (solved.value) {
+    return t('card.solved', { artist: props.track.artist, title: props.track.title, player: props.playerName })
+  }
+  if (props.playing) return t('card.playing', { n })
+  return t(props.faceUp ? 'card.revealed' : 'card.hidden', { n })
 })
 </script>
 
