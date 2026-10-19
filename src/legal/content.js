@@ -25,16 +25,13 @@ export function legalContent(lang, op, updated) {
 
 function german(op, updated) {
   const name = or(op.name, 'Vor- und Nachname')
-  const address = [or(op.street, 'Straße und Hausnummer'), `${or(op.postalCode, 'PLZ')} ${or(op.city, 'Ort')}`, 'Deutschland']
   const email = or(op.email, 'E-Mail-Adresse')
-  const phone = or(op.phone, 'Telefonnummer')
 
   return {
     imprint: [
-      { h: 'Angaben gemäß § 5 DDG' },
-      { lines: [name, ...address] },
       { h: 'Kontakt' },
-      { lines: [`E-Mail: ${email}`, `Telefon: ${phone}`] },
+      { lines: [name] },
+      { lines: [`E-Mail: ${email}`] },
       { h: 'Hinweis' },
       {
         p: 'Music Memory ist ein privates, nicht kommerzielles Projekt. Es steht in keiner Verbindung zu Spotify AB und wird von Spotify weder unterstützt noch gesponsert. „Spotify“ ist eine Marke der Spotify AB.',
@@ -46,7 +43,7 @@ function german(op, updated) {
     privacy: [
       { h: '1. Verantwortlicher' },
       { p: 'Verantwortlich für die Datenverarbeitung auf dieser Website im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:' },
-      { lines: [name, ...address, `E-Mail: ${email}`] },
+      { lines: [name, `E-Mail: ${email}`] },
 
       { h: '2. Überblick' },
       {
@@ -115,16 +112,13 @@ function german(op, updated) {
 
 function english(op, updated) {
   const name = or(op.name, 'First and last name')
-  const address = [or(op.street, 'Street and number'), `${or(op.postalCode, 'Postcode')} ${or(op.city, 'City')}`, 'Germany']
   const email = or(op.email, 'Email address')
-  const phone = or(op.phone, 'Phone number')
 
   return {
     imprint: [
-      { h: 'Information pursuant to § 5 DDG (German Digital Services Act)' },
-      { lines: [name, ...address] },
       { h: 'Contact' },
-      { lines: [`Email: ${email}`, `Phone: ${phone}`] },
+      { lines: [name] },
+      { lines: [`Email: ${email}`] },
       { h: 'Note' },
       {
         p: 'Music Memory is a private, non-commercial project. It is not affiliated with, endorsed or sponsored by Spotify AB. “Spotify” is a trademark of Spotify AB.',
@@ -136,7 +130,7 @@ function english(op, updated) {
     privacy: [
       { h: '1. Controller' },
       { p: 'The controller responsible for data processing on this website within the meaning of the General Data Protection Regulation (GDPR) is:' },
-      { lines: [name, ...address, `Email: ${email}`] },
+      { lines: [name, `Email: ${email}`] },
 
       { h: '2. Overview' },
       {

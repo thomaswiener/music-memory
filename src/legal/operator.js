@@ -8,12 +8,8 @@
 // Empty fields are shown as highlighted placeholders in the legal overlay.
 
 export const OPERATOR = {
-  name: '', // e.g. 'Max Mustermann'
-  street: '', // e.g. 'Musterstraße 1'
-  postalCode: '', // e.g. '10115'
-  city: '', // e.g. 'Berlin'
-  email: '', // e.g. 'kontakt@example.de'
-  phone: '', // e.g. '+49 30 1234567'
+  name: 'Thomas Wiener', // e.g. 'Max Mustermann'
+  email: 'wiener.thomas@googlemail.com', // e.g. 'kontakt@example.de'
 }
 
 /** Date the privacy policy was last reviewed (shown as "Stand"). */
