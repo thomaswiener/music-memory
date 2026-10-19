@@ -54,7 +54,7 @@ Tags are picked up automatically by the include/exclude filters.
 
 All UI text lives in `src/i18n/translations.js`, one block per language
 (`de`, `en`, `fr`, `es`). The app starts in the browser's language (falling back
-to English) and remembers the choice made under Settings → Language.
+to English) and remembers the choice made with the globe menu in the header.
 
 - Use texts in components with `t('settings.title')`; parameters fill
   `{placeholders}`: `t('device.playingOn', { name })`.

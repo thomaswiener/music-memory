@@ -8,7 +8,7 @@ import { BOARD_SIZES, filterTracks, parseBoardSize } from '../lib/game'
 import { playerColor, defaultPlayerName, normalizePlayers } from '../lib/players'
 import { spotify, disconnect } from '../composables/useSpotify'
 import { newGame } from '../composables/useGame'
-import { t, i18n, LANGUAGES } from '../i18n'
+import { t } from '../i18n'
 
 const props = defineProps({ open: Boolean })
 const emit = defineEmits(['close'])
@@ -107,12 +107,6 @@ function apply() {
           </select>
         </div>
         <div>
-          <label class="label" for="language">{{ t('settings.language') }}</label>
-          <select id="language" v-model="i18n.locale" class="field">
-            <option v-for="lang in LANGUAGES" :key="lang.code" :value="lang.code" :lang="lang.code">{{ lang.label }}</option>
-          </select>
-        </div>
-        <div class="span-2">
           <label class="label" for="settings-client-id">
             {{ t('settings.clientId') }}
             <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">{{ t('settings.dashboard') }}</a>
@@ -204,15 +198,9 @@ h3 {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
-.span-2 {
-  grid-column: span 2;
-}
 @media (max-width: 560px) {
   .grid {
     grid-template-columns: 1fr;
-  }
-  .span-2 {
-    grid-column: auto;
   }
 }
 .hint {
