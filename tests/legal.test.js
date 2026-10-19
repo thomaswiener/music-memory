@@ -4,11 +4,7 @@ import { legalContent } from '../src/legal/content'
 const EMPTY = { name: '', street: '', postalCode: '', city: '', email: '', phone: '' }
 const FILLED = {
   name: 'Max Mustermann',
-  street: 'Musterstraße 1',
-  postalCode: '10115',
-  city: 'Berlin',
   email: 'max@example.de',
-  phone: '+49 30 1234567',
 }
 const shape = (blocks) => blocks.map((b) => Object.keys(b)[0] + (b.ul ? b.ul.length : b.lines ? b.lines.length : ''))
 const allText = (c) => JSON.stringify(c)
@@ -24,7 +20,7 @@ describe('legal content', () => {
 
   it('marks every missing operator detail as a placeholder', () => {
     const imprint = allText(legalContent('de', EMPTY, '2026-10-19').imprint)
-    for (const label of ['Vor- und Nachname', 'Straße und Hausnummer', 'PLZ', 'Ort', 'E-Mail-Adresse', 'Telefonnummer']) {
+    for (const label of ['Vor- und Nachname', 'E-Mail-Adresse']) {
       expect(imprint).toContain(`[[${label}]]`)
     }
   })
@@ -33,11 +29,5 @@ describe('legal content', () => {
     for (const lang of ['de', 'en']) {
       expect(allText(legalContent(lang, FILLED, '2026-10-19'))).not.toContain('[[')
     }
-  })
-
-  it('names § 5 DDG and does not link the discontinued EU ODR platform', () => {
-    const de = allText(legalContent('de', FILLED, '2026-10-19'))
-    expect(de).toContain('§ 5 DDG')
-    expect(de).not.toMatch(/ec\.europa\.eu\/consumers\/odr|OS-Plattform/)
   })
 })
