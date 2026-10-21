@@ -207,10 +207,14 @@ export function createClient(getClientId) {
   return {
     me: () => request('GET', '/me'),
     devices: async () => (await request('GET', '/me/player/devices'))?.devices ?? [],
-    play: (deviceId, uri, positionMs = 0) =>
+    play: (deviceId, context_uri, uri, positionMs = 0) =>
       request('PUT', '/me/player/play', {
         query: { device_id: deviceId },
-        body: { uris: [uri], position_ms: positionMs },
+        body: {
+          context_uri: context_uri,
+          offset: { uri: uri },
+          position_ms: positionMs
+        },
       }),
     pause: (deviceId) => request('PUT', '/me/player/pause', { query: { device_id: deviceId } }),
   }
