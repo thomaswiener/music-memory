@@ -24,7 +24,7 @@ function choose(code) {
       :title="`${t('settings.language')}: ${current?.label}`"
       @click="toggle"
     >
-      <i class="bi bi-globe" />
+      <i class="bi bi-translate" />
     </button>
     <ul v-show="open" class="dropdown-menu" role="menu">
       <li class="heading">{{ t('settings.language') }}</li>
