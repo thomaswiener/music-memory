@@ -118,7 +118,7 @@ export async function playSnippet(track, { keepPlaying = false, shouldContinue =
     throw new sp.SpotifyError('noDevice', { status: 404, code: 'no_device' })
   }
   try {
-    await api.play(settings.deviceId, track.uri, track.start)
+    await api.play(settings.deviceId, track.context_uri, track.uri, track.start)
   } catch (err) {
     if (err.status === 404) {
       settings.deviceId = null
