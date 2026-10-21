@@ -9,7 +9,7 @@ const t = (album_id, id, start, duration, artist, title, tags) => ({
 
 export const TRACKS = [
   t('7yjP7yQ9Q49ATlIt0Nxwi9', '2gi0hPEYwxNuXs07OdTyBG', 2960, 2700, 'Pornhub', 'Pornhub', ['custom', 'funny']),
-  t('7Kusf5plZjl76X5ARWJbNO', '303ccTay2FiDTZ9fZ2AdBt', 30000, 4700, 'Stardust', 'Music Sounds Better with You', ['custom', 'house', '90s', 'x']),
+  t('7Kusf5plZjl76X5ARWJbNO', '303ccTay2FiDTZ9fZ2AdBt', 30000, 4700, 'Stardust', 'Music Sounds Better with You', ['custom', 'house', '90s']),
   t('6ZIeF1ZKEspFec9lyZAdys', '49RnMMretBCApdz6XyufiC', 54000, 5000, 'Christian Steiffen', 'Sexualverkehr', ['custom', 'funny', 'deutsch', 'explicit']),
   t('4V14ntAavm3i5BIB5CNNTu', '44d9pjbVJH3lakrwnMdaAa', 69650, 3550, 'Alexander Marcus', 'Homodance', ['custom', 'funny', 'deutsch']),
   t('7zlMxh1NR0Shklu48L4e7x', '0noVd1VU93X8TEZMmpR3yN', 114400, 7300, 'Eric Prydz', 'Pjanoo', ['custom', 'house']),
