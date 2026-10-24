@@ -63,7 +63,8 @@ export const TRACKS = [
   t('1fxhzVosrHlnYz27SlDy3e', '1GfLWbfdEzFO1lI9D1TsdF', 48000, 8000, 'The Chemical Brothers', 'Go', ['10s', 'trip hop']),
   t('4umed49HvB2X8x3Kkjf1HO', '0xCXcq4y44uHJtJ7zZDF3d', 55150, 8000, 'Bilderbuch', 'Bungalow', ['10s', 'deutsch']),
   t('2j3dLULErYg2IgQeBqEX1w', '7iNLydOMjLLb7BiwkdoPDU', 14600, 7600, 'Kitschkrieg', 'Gut genug', ['20s', 'deutsch']),
-  t('0R7lKm7pMZHjdrY1UVcc02', '1DOVkuzAdnyHgDJXbp92Wq', 44300, 10000, 'makko', 'Inundauswendig', ['20s', 'deutsch']),
+  t('0R7lKm7pMZHjdrY1UVcc02', '1DOVkuzAdnyHgDJXbp92Wq', 44300, 10500, 'makko', 'Inundauswendig', ['20s', 'deutsch']),
+  t('4fdgcEVMdJe0KVgupMNJAP', '79CUrU5o2KAVDTNm4x3eGU', 24160, 6000, 'The Prodigy', 'Firestarter', ['90s']),
 ]
 
 export const TRACK_BY_URI = new Map(TRACKS.map((track) => [track.uri, track]))
