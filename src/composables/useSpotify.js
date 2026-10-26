@@ -5,6 +5,7 @@ import * as sp from '../lib/spotify'
 import { settings, notify } from '../store'
 import { log } from '../lib/logger'
 import { sleep } from '../lib/sleep'
+import { waitForPlayback, waitUntilPosition } from '../lib/playback'
 import { errorText } from '../i18n'
 
 export const spotify = reactive({
@@ -126,8 +127,36 @@ export async function playSnippet(track, { keepPlaying = false, shouldContinue =
     }
     throw err
   }
-  await sleep(track.duration)
+  await waitForSnippetEnd(track, shouldContinue)
   if (!keepPlaying && shouldContinue()) await stopPlayback()
+}
+
+/**
+ * Times the snippet from confirmed playback on the device rather than from the
+ * play request, so device start-up lag doesn't eat into the snippet.
+ * Falls back to a plain timer if the device never reports playback.
+ */
+async function waitForSnippetEnd(track, shouldContinue) {
+  const deps = { getState: playbackStateOrNull, sleep }
+  const started = await waitForPlayback(deps, track.uri, track.start, { shouldContinue })
+  if (!shouldContinue()) return
+  if (!started) {
+    log.warn('playback start not confirmed, falling back to timer', track.uri)
+    await sleep(track.duration)
+    return
+  }
+  log.debug('playback confirmed at', started.progressMs, 'ms')
+  await waitUntilPosition(deps, track.uri, track.start + track.duration, started, { shouldContinue })
+}
+
+/** A failed state poll shouldn't abort the turn; treat it as "not playing yet". */
+async function playbackStateOrNull() {
+  try {
+    return await api.playbackState()
+  } catch (err) {
+    log.debug('playback state poll failed', err)
+    return null
+  }
 }
 
 export async function stopPlayback() {

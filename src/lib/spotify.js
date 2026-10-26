@@ -216,6 +216,8 @@ export function createClient(getClientId) {
           position_ms: positionMs
         },
       }),
+    /** Current playback state, or null when nothing is active (204). */
+    playbackState: () => request('GET', '/me/player'),
     pause: (deviceId) => request('PUT', '/me/player/pause', { query: { device_id: deviceId } }),
   }
 }
