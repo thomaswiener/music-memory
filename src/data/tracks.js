@@ -23,7 +23,7 @@ export const TRACKS = [
   t('65NM9j8ZUrRNMNdNnXxdRt', '4XtpXYrujHRGHRtALZzbKO', 8200, 6700, 'Sasha', 'Party Party', ['custom', 'deutsch', '10s']),
   t('2hEyYIrm4e6gVgfaYLY00x', '37m2khXl5lnBzicq1mGoZG', 54800, 6000, 'The Prodigy', 'Out of Space', ['custom', '90s']),
   t('2uoNsOC1w0zkRp0TE2uzuI', '26eOTllWPn7oKuDUJnsJwF', 80100, 7700, 'Gwen Stefani', 'The Sweet Escape', ['custom', '90s']),
-  t('3HJ6KvW4Lpuhc1FbWmQhOL', '2YSlbwlmDFtkqz7PLSWUeT', 18280, 8200, 'The Naked and Famous', 'Young Blood', ['custom', '00s']),
+  t('1XEImTrlT2BxE1Xdav2kM9', '6FYs5OcCeH8RiQ3jcI9NWI', 9500, 8200, 'The Naked and Famous', 'Young Blood', ['custom', '00s']),
   t('0J43YxxLFPZxIrCd12LRuN', '5Sh9v7RwibuV34tdjscwx5', 77000, 7800, 'Fatboy Slim', 'Right Here, Right Now', ['custom', '90s']),
   t('7gMOCbeBmxH1BD4kqtqehq', '2FjORVPL2w8GtJucvZGCXq', 59800, 8000, 'Spliff', 'Carbonara', ['custom', '80s']),
   t('2hy9sLDt7IVAvJRGVdzZnx', '73ljrkSg4A0q3ByU0Cu7mw', 26490, 7400, 'Vengaboys', 'We Like to Party', ['custom', '90s']),
