@@ -17,6 +17,9 @@ export const EARLY_WAKE_MS = 400
 /** Max position re-checks before pausing (guards against endless top-ups). */
 export const MAX_CHECKS = 3
 
+/** Max time to wait for the device to confirm a pause before releasing the board. */
+export const STOP_TIMEOUT_MS = 3000
+
 /** True if the player state shows `uri` playing (handles track relinking). */
 export function isPlayingTrack(state, uri) {
   if (!state?.is_playing || !state.item) return false
@@ -74,4 +77,24 @@ export async function waitUntilPosition(
     progressMs = state.progress_ms
     at = now()
   }
+}
+
+/**
+ * Polls until the device no longer plays `uri` (paused, other track, or no
+ * active player). Like play, `PUT /me/player/pause` returns before the device
+ * has acted on it; a play command sent in that gap gets overtaken by the late
+ * pause. Resolves true once stopped, false on timeout / cancellation.
+ */
+export async function waitForStop(
+  { getState, sleep, now = Date.now },
+  uri,
+  { timeoutMs = STOP_TIMEOUT_MS, intervalMs = POLL_INTERVAL_MS, shouldContinue = () => true } = {},
+) {
+  const deadline = now() + timeoutMs
+  while (now() < deadline) {
+    if (!shouldContinue()) return false
+    if (!isPlayingTrack(await getState(), uri)) return true
+    await sleep(intervalMs)
+  }
+  return false
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isPlayingTrack, waitForPlayback, waitUntilPosition } from '../src/lib/playback'
+import { isPlayingTrack, waitForPlayback, waitForStop, waitUntilPosition } from '../src/lib/playback'
 
 const URI = 'spotify:track:abc'
 
@@ -112,5 +112,52 @@ describe('snippet timing end to end', () => {
     dev.deps.getState = async () => ({ is_playing: true, progress_ms: 0, item: { uri: 'spotify:track:other' } })
     await waitUntilPosition(dev.deps, URI, SEEK + DURATION, started)
     expect(dev.clock() - before).toBeLessThan(DURATION)
+  })
+})
+
+describe('waitForStop', () => {
+  /** Device that keeps reporting `uri` playing until local time `pausedAt`. */
+  function pausingDevice(pausedAt) {
+    let clock = 0
+    return {
+      deps: {
+        now: () => clock,
+        sleep: async (ms) => {
+          clock += ms
+        },
+        getState: async () => ({ is_playing: clock < pausedAt, progress_ms: 40_000, item: { uri: URI } }),
+      },
+      clock: () => clock,
+    }
+  }
+
+  it('holds until the device reports the pause', async () => {
+    const dev = pausingDevice(1100)
+    expect(await waitForStop(dev.deps, URI)).toBe(true)
+    expect(dev.clock()).toBeGreaterThanOrEqual(1100)
+  })
+
+  it('returns immediately when already stopped', async () => {
+    const dev = pausingDevice(0)
+    expect(await waitForStop(dev.deps, URI)).toBe(true)
+    expect(dev.clock()).toBe(0)
+  })
+
+  it('treats another track or no active player as stopped', async () => {
+    const other = { now: () => 0, sleep: async () => {}, getState: async () => ({ is_playing: true, item: { uri: 'spotify:track:x' } }) }
+    expect(await waitForStop(other, URI)).toBe(true)
+    const none = { now: () => 0, sleep: async () => {}, getState: async () => null }
+    expect(await waitForStop(none, URI)).toBe(true)
+  })
+
+  it('gives up after the timeout', async () => {
+    const dev = pausingDevice(Infinity)
+    expect(await waitForStop(dev.deps, URI, { timeoutMs: 1000 })).toBe(false)
+    expect(dev.clock()).toBeGreaterThanOrEqual(1000)
+  })
+
+  it('stops waiting when the turn is cancelled', async () => {
+    const dev = pausingDevice(Infinity)
+    expect(await waitForStop(dev.deps, URI, { shouldContinue: () => false })).toBe(false)
   })
 })

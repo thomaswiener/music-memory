@@ -5,7 +5,7 @@ import * as sp from '../lib/spotify'
 import { settings, notify } from '../store'
 import { log } from '../lib/logger'
 import { sleep } from '../lib/sleep'
-import { waitForPlayback, waitUntilPosition } from '../lib/playback'
+import { waitForPlayback, waitForStop, waitUntilPosition } from '../lib/playback'
 import { errorText } from '../i18n'
 
 export const spotify = reactive({
@@ -128,7 +128,12 @@ export async function playSnippet(track, { keepPlaying = false, shouldContinue =
     throw err
   }
   await waitForSnippetEnd(track, shouldContinue)
-  if (!keepPlaying && shouldContinue()) await stopPlayback()
+  if (keepPlaying || !shouldContinue()) return
+  await stopPlayback()
+  // Keep the caller's turn lock until the device has really paused; otherwise
+  // the next card's play request can be overtaken by this late pause.
+  const stopped = await waitForStop({ getState: playbackStateOrNull, sleep }, track.uri, { shouldContinue })
+  if (!stopped && shouldContinue()) log.warn('pause not confirmed by device', track.uri)
 }
 
 /**
