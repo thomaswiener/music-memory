@@ -6,6 +6,15 @@
     <meta name="description" content="A memory match game played by ear — flip tiles, listen, pair the songs." />
     <meta name="theme-color" content="#f5f4f0" />
     <title>MUSIC MEMORY</title>
+    <script>
+      // Set the theme before first paint so dark mode doesn't flash light.
+      // Mirrors resolveTheme() in src/lib/theme.js.
+      try {
+        var t = JSON.parse(localStorage.getItem('mm:theme'))
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        document.documentElement.dataset.theme = t
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="app"></div>

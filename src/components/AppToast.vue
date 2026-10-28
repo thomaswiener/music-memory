@@ -26,15 +26,15 @@ import { t } from '../i18n'
   width: max-content;
   max-width: calc(100vw - 32px);
   padding: 10px 12px 10px 16px;
-  background: var(--ink);
-  color: #fff;
+  background: var(--toast-bg);
+  color: var(--toast-ink);
   border-radius: 8px;
   box-shadow: var(--shadow);
   font-size: 13px;
   line-height: 1.4;
 }
 .toast.error .bi:first-child {
-  color: #fca5a5;
+  color: var(--toast-error);
 }
 button {
   border: 0;

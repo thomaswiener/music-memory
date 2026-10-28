@@ -18,11 +18,64 @@
   --card-pip: #cecdc7;
   --card-front-border: #e2e1db;
   --shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+  --icon: #212529;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --menu-border: #dddddd;
+  --menu-sep: #e9ecef;
+  --toast-bg: #1a1a1a;
+  --toast-ink: #ffffff;
+  --toast-error: #fca5a5;
+  --highlight-bg: #fff3bf;
+  --highlight-ink: #8a6100;
+  --backdrop: rgb(0 0 0 / 0.3);
+  /* solved card backs: player colour mixed with this tint */
+  --solved-tint: #ffffff;
+  /* player names: share of the player colour (rest is white) — dark mode lifts dark palette entries */
+  --player-ink: 100%;
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708'/%3E%3C/svg%3E");
 
   color-scheme: light;
   font-family: 'DM Mono', ui-monospace, monospace;
   color: var(--ink);
   background: var(--bg);
+}
+
+:root[data-theme='dark'] {
+  --bg: #141517;
+  --surface: #1e1f22;
+  --ink: #e8e8e6;
+  --muted: #8e9096;
+  --muted-2: #66686e;
+  --line: #2c2e32;
+  --line-strong: #3b3e44;
+  --hover: #2a2c30;
+  --link: #6ea8fe;
+  --link-hover: #9ec5fe;
+  --focus: #6ea8fe;
+  --success: #34c46a;
+  --danger: #f2707c;
+  --card-back: #2a2b2f;
+  --card-back-border: #393a3f;
+  --card-pip: #46474d;
+  --card-front-border: #34363b;
+  --shadow: 0 2px 12px rgb(0 0 0 / 0.5);
+  --icon: #e3e3e1;
+  --primary: #3b7cf0;
+  --primary-hover: #2563eb;
+  --menu-border: #3b3e44;
+  --menu-sep: #2c2e32;
+  --toast-bg: #2e3035;
+  --toast-ink: #f1f1f0;
+  --toast-error: #f9a3a3;
+  --highlight-bg: #4a3d12;
+  --highlight-ink: #ffd96a;
+  --backdrop: rgb(0 0 0 / 0.55);
+  --solved-tint: #000000;
+  --player-ink: 60%;
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23e3e3e1'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708'/%3E%3C/svg%3E");
+
+  color-scheme: dark;
 }
 
 *,
@@ -71,7 +124,7 @@ select {
 select.field {
   appearance: none;
   padding-right: 34px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708'/%3E%3C/svg%3E");
+  background-image: var(--chevron);
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 1em;
@@ -80,7 +133,7 @@ select.field {
 .field:focus {
   border-color: var(--focus);
   outline: none;
-  box-shadow: 0 0 0 3px rgb(76 139 245 / 0.18);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 22%, transparent);
 }
 
 .btn {
@@ -95,11 +148,11 @@ select.field {
   white-space: nowrap;
 }
 .btn.primary {
-  background: var(--link);
+  background: var(--primary);
   color: #fff;
 }
 .btn.primary:hover {
-  background: var(--link-hover);
+  background: var(--primary-hover);
 }
 .btn:disabled {
   opacity: 0.5;
@@ -131,7 +184,7 @@ select.field {
   border-radius: 6px;
   background: transparent;
   font-size: 13px;
-  color: #212529;
+  color: var(--icon);
   cursor: pointer;
 }
 .icon-btn:hover:not(:disabled) {
@@ -163,7 +216,7 @@ select.field {
   padding: 4px 0;
   list-style: none;
   background: var(--surface);
-  border: 1px solid #ddd;
+  border: 1px solid var(--menu-border);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
   text-transform: none;
@@ -173,7 +226,7 @@ select.field {
 .dropdown-menu a {
   display: block;
   padding: 8px 16px;
-  color: #212529;
+  color: var(--icon);
   white-space: nowrap;
   text-decoration: none;
 }
@@ -181,7 +234,7 @@ select.field {
   background: var(--hover);
 }
 .dropdown-menu .sep {
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--menu-sep);
   margin: 4px 0;
 }
 
