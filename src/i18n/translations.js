@@ -27,6 +27,8 @@ export default {
       debug: 'Debug',
       debugTitle: 'Show track ids on the cards',
       settings: 'Settings',
+      darkMode: 'Dark mode',
+      lightMode: 'Light mode',
     },
     device: {
       label: 'Playback device',
@@ -176,6 +178,8 @@ export default {
       debug: 'Debug',
       debugTitle: 'Track-IDs auf den Karten anzeigen',
       settings: 'Einstellungen',
+      darkMode: 'Dunkler Modus',
+      lightMode: 'Heller Modus',
     },
     device: {
       label: 'Wiedergabegerät',
@@ -326,6 +330,8 @@ export default {
       debug: 'Debug',
       debugTitle: 'Afficher les identifiants des titres sur les cartes',
       settings: 'Paramètres',
+      darkMode: 'Mode sombre',
+      lightMode: 'Mode clair',
     },
     device: {
       label: 'Appareil de lecture',
@@ -477,6 +483,8 @@ export default {
       debug: 'Debug',
       debugTitle: 'Mostrar los ID de las canciones en las cartas',
       settings: 'Ajustes',
+      darkMode: 'Modo oscuro',
+      lightMode: 'Modo claro',
     },
     device: {
       label: 'Dispositivo de reproducción',

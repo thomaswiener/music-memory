@@ -81,11 +81,11 @@ import { t } from '../i18n'
   font-weight: 500;
 }
 .name {
-  color: var(--player);
+  color: color-mix(in srgb, var(--player) var(--player-ink), #ffffff);
 }
 .stats li.active {
   color: var(--ink);
-  border-top-color: var(--player);
+  border-top-color: color-mix(in srgb, var(--player) var(--player-ink), #ffffff);
 }
 .stats li.active .name,
 .stats li.active strong {

@@ -29,8 +29,8 @@ const parts = computed(() =>
 .missing {
   padding: 0 4px;
   border-radius: 3px;
-  background: #fff3bf;
-  color: #8a6100;
+  background: var(--highlight-bg);
+  color: var(--highlight-ink);
   font-style: italic;
 }
 a {
