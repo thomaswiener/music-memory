@@ -15,9 +15,15 @@ const model = defineModel({ type: Array, default: () => [] })
 const uid = useId()
 const { open, root, toggle } = useDropdown()
 
-const label = computed(() =>
-  model.value.length ? model.value.map(tagLabel).join(', ') : props.placeholder || t('tagSelect.placeholder'),
-)
+/** From this many selected tags on, the button shows "N selected" instead of the names. */
+const COUNT_FROM = 3
+
+const names = computed(() => model.value.map(tagLabel).join(', '))
+const label = computed(() => {
+  const n = model.value.length
+  if (!n) return props.placeholder || t('tagSelect.placeholder')
+  return n >= COUNT_FROM ? t('tagSelect.selected', { count: n }) : names.value
+})
 
 function setTag(tag, checked) {
   model.value = checked ? [...model.value, tag].sort() : model.value.filter((t) => t !== tag)
@@ -32,6 +38,7 @@ function setTag(tag, checked) {
       :class="{ empty: !model.length }"
       :aria-expanded="open"
       :aria-controls="`${uid}-menu`"
+      :title="model.length ? names : undefined"
       @click="toggle"
     >
       <span class="label">{{ label }}</span>
@@ -61,6 +68,7 @@ function setTag(tag, checked) {
 <style scoped>
 .tag-select {
   position: relative;
+  min-width: 0;
 }
 .toggle {
   display: flex;
@@ -74,6 +82,7 @@ function setTag(tag, checked) {
   color: var(--muted);
 }
 .label {
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
