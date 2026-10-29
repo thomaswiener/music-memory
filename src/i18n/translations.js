@@ -18,12 +18,12 @@ export default {
       tracks: { one: '{count} track', other: '{count} tracks' },
       pairs: { one: '{count} pair', other: '{count} pairs' },
       cards: { one: '{count} card', other: '{count} cards' },
-      rounds: { one: '{count} round', other: '{count} rounds' },
+      rounds: { one: '{count} move', other: '{count} moves' },
       moves: { one: '{count} move', other: '{count} moves' },
     },
     nav: {
       newGame: 'New game',
-      rounds: { one: 'round', other: 'rounds' },
+      rounds: { one: 'move', other: 'moves' },
       debug: 'Debug',
       debugTitle: 'Show track ids on the cards',
       settings: 'Settings',
@@ -95,6 +95,7 @@ export default {
     tagSelect: {
       placeholder: 'Select tags',
       clear: 'Clear selection',
+      selected: { one: '{count} selected', other: '{count} selected' },
     },
     tags: {
       custom: 'custom',
@@ -246,6 +247,7 @@ export default {
     tagSelect: {
       placeholder: 'Tags auswählen',
       clear: 'Auswahl löschen',
+      selected: { one: '{count} ausgewählt', other: '{count} ausgewählt' },
     },
     tags: {
       custom: 'custom',
@@ -398,6 +400,7 @@ export default {
     tagSelect: {
       placeholder: 'Choisir des tags',
       clear: 'Effacer la sélection',
+      selected: { one: '{count} sélectionné', other: '{count} sélectionnés' },
     },
     tags: {
       custom: 'custom',
@@ -551,6 +554,7 @@ export default {
     tagSelect: {
       placeholder: 'Elegir etiquetas',
       clear: 'Borrar selección',
+      selected: { one: '{count} seleccionada', other: '{count} seleccionadas' },
     },
     tags: {
       custom: 'custom',

@@ -24,11 +24,17 @@ const themeLabel = computed(() => t(theme.value === 'dark' ? 'nav.lightMode' : '
     </template>
 
     <div class="right">
-      <label class="debug hide-sm" :title="t('nav.debugTitle')">
-        <input v-model="settings.debug" type="checkbox" role="switch" />
-        <span class="switch" aria-hidden="true" />
-        <span class="label">{{ t('nav.debug') }}</span>
-      </label>
+      <button
+        type="button"
+        class="icon-btn debug hide-sm"
+        :class="{ on: settings.debug }"
+        :aria-pressed="settings.debug"
+        :aria-label="t('nav.debug')"
+        :title="t('nav.debugTitle')"
+        @click="settings.debug = !settings.debug"
+      >
+        <i :class="settings.debug ? 'bi bi-bug-fill' : 'bi bi-bug'" />
+      </button>
       <button
         type="button"
         class="icon-btn"
@@ -89,63 +95,8 @@ const themeLabel = computed(() => t(theme.value === 'dark' ? 'nav.lightMode' : '
   align-items: center;
   gap: 4px;
 }
-.debug {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-right: 8px;
-  color: var(--muted);
-  cursor: pointer;
-  user-select: none;
-}
-/* Native checkbox stays for keyboard + screen readers, visually replaced by the switch. */
-.debug input {
-  position: absolute;
-  opacity: 0;
-  width: 1px;
-  height: 1px;
-  margin: 0;
-}
-.switch {
-  position: relative;
-  flex: none;
-  width: 30px;
-  height: 18px;
-  border-radius: 999px;
-  background: var(--line-strong);
-  transition: background 0.18s ease;
-}
-.switch::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--surface);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
-  transition: transform 0.18s ease;
-}
-.debug input:checked + .switch {
-  background: var(--primary);
-}
-.debug input:checked + .switch::after {
-  transform: translateX(12px);
-}
-.debug input:checked ~ .label {
-  color: var(--ink);
-}
-.debug input:focus-visible + .switch {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .switch,
-  .switch::after {
-    transition: none;
-  }
+.debug.on {
+  color: var(--link);
 }
 @media (max-width: 480px) {
   .topnav {
