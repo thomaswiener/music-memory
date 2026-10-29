@@ -63,7 +63,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
   inset: 0;
   z-index: 1000;
   display: flex;
-  background: rgb(0 0 0 / 0.3);
+  background: var(--backdrop);
   overflow-y: auto;
 }
 .overlay.sheet {

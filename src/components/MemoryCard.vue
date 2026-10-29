@@ -128,7 +128,7 @@ const label = computed(() => {
   transform: rotateY(180deg);
 }
 .solved .back {
-  background: color-mix(in srgb, var(--player) 90%, white);
+  background: color-mix(in srgb, var(--player) 90%, var(--solved-tint));
   border-color: transparent;
   color: #ffffff;
 }

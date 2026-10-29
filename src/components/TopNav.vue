@@ -4,9 +4,13 @@ import LanguageMenu from './LanguageMenu.vue'
 import { spotify } from '../composables/useSpotify'
 import { game } from '../composables/useGame'
 import { settings } from '../store'
+import { theme, toggleTheme } from '../composables/useTheme'
+import { computed } from 'vue'
 import { t } from '../i18n'
 
 defineEmits(['new-game', 'open-settings'])
+
+const themeLabel = computed(() => t(theme.value === 'dark' ? 'nav.lightMode' : 'nav.darkMode'))
 </script>
 
 <template>
@@ -25,6 +29,15 @@ defineEmits(['new-game', 'open-settings'])
         <span class="switch" aria-hidden="true" />
         <span class="label">{{ t('nav.debug') }}</span>
       </label>
+      <button
+        type="button"
+        class="icon-btn"
+        :aria-label="themeLabel"
+        :title="themeLabel"
+        @click="toggleTheme"
+      >
+        <i :class="theme === 'dark' ? 'bi bi-sun' : 'bi bi-moon'" />
+      </button>
       <LanguageMenu />
       <DeviceMenu v-if="spotify.phase === 'ready'" />
       <button type="button" class="icon-btn" :aria-label="t('nav.settings')" :title="t('nav.settings')" @click="$emit('open-settings')">
@@ -116,7 +129,7 @@ defineEmits(['new-game', 'open-settings'])
   transition: transform 0.18s ease;
 }
 .debug input:checked + .switch {
-  background: var(--link);
+  background: var(--primary);
 }
 .debug input:checked + .switch::after {
   transform: translateX(12px);
@@ -144,9 +157,9 @@ defineEmits(['new-game', 'open-settings'])
   .right {
     gap: 0;
   }
-  /* three icon buttons (language, device, settings) need to fit on a phone */
+  /* four icon buttons (theme, language, device, settings) need to fit on a phone */
   .right :deep(.icon-btn) {
-    width: 36px;
+    width: 34px;
   }
 }
 @media (max-width: 360px) {
