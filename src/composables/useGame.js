@@ -10,8 +10,8 @@ import { playSnippet, stopPlayback, handleError } from './useSpotify'
 import { t } from '../i18n'
 
 const SAVE_KEY = 'mm:game'
-const REVEAL_MS = 350 // beat after the 2nd snippet before judging the pair
-const MISMATCH_MS = 650 // shake, then flip back
+const REVEAL_MS = 100 // beat after the 2nd snippet before judging the pair
+const MISMATCH_MS = 250 // shake, then flip back
 
 export const game = reactive({
   cards: [],
