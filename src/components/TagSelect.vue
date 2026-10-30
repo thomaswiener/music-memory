@@ -58,7 +58,7 @@ function setTag(tag, checked) {
         </label>
       </li>
       <li v-if="model.length" class="sep" />
-      <li v-if="model.length">
+      <li v-if="model.length" class="full">
         <button type="button" class="clear" @click="model = []">{{ t('tagSelect.clear') }}</button>
       </li>
     </ul>
@@ -94,17 +94,24 @@ function setTag(tag, checked) {
   margin: 4px 0 0;
   padding: 4px 0;
   max-height: 280px;
+  overflow-x: hidden;
   overflow-y: auto;
   list-style: none;
   background: var(--surface);
   border: 1px solid var(--line-strong);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
-  columns: 2;
-  column-gap: 0;
+  /* Grid, not CSS columns: multi-column with a max-height adds extra columns
+     sideways (horizontal scroll) instead of scrolling down. */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
 }
 .menu li {
-  break-inside: avoid;
+  min-width: 0;
+}
+.menu .full {
+  grid-column: 1 / -1;
 }
 .menu label,
 .clear {
@@ -124,12 +131,11 @@ function setTag(tag, checked) {
   cursor: not-allowed;
 }
 .sep {
-  column-span: all;
+  grid-column: 1 / -1;
   border-top: 1px solid var(--line);
   margin: 4px 0;
 }
 .clear {
-  column-span: all;
   width: 100%;
   border: 0;
   background: none;
