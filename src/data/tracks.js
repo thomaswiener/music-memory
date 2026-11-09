@@ -55,7 +55,7 @@ export const TRACKS = [
   t('6FDUs0DdSW9kwVONDhHASq', '0CiImSC9ZCxleVvlJpeZfW', 40300, 9000, 'B-migos', 'In meiner Hose wohnt ein Iltis', ['custom', 'schlager', 'ballermann', 'funny', 'deutsch', 'explicit']),
   t('4feSHRP0Xugt1nDWZ1v4x9', '06fTDU8DR3pTESMgOFXR4T', 18500, 8500, 'Howard Carpendale', 'Hello Again', ['schlager', 'funny', 'deutsch', '80s']),
   t('3WNxdumkSMGMJRhEgK80qx', '3MjUtNVVq3C8Fn0MP3zhXa', 0, 8500, 'Britney Spears', '…Baby One More Time', ['pop', '90s']),
-  t('518HX24MsR0XmfNJjd3M2O', '4XyYbwXxN1Rm1cEhegGR2J', 63400, 8000, 'Jan Böhmermann', 'Faschismus is back', ['funny', '20s', 'deutsch','aaa']),
+  t('518HX24MsR0XmfNJjd3M2O', '4XyYbwXxN1Rm1cEhegGR2J', 63400, 8000, 'Jan Böhmermann', 'Faschismus is back', ['funny', '20s', 'deutsch']),
   t('2tne1K96u0liOIzEdDXY2Z', '2BZ8hZDDjpvxa8d1ZESzil', 11550, 6200, 'Kraftklub', 'Kippenautomat', ['rock', 'indie', '20s', 'deutsch']),
   t('0S0KGZnfBGSIssfF54WSJh', '2Fxmhks0bxGSBdJ92vM42m', 60400, 6600, 'Billie Eilish', 'bad guy', ['pop', '10s']),
   t('3MnOoZGbCDAjLf8jOImSbg', '1zneM1cLjM6w8BFmukl2Lr', 8000, 7400, 'CeeLo Green', 'Fuck You', ['rnb', 'soul', 'pop', '10s', 'explicit']),
@@ -69,7 +69,9 @@ export const TRACKS = [
   t('30Perjew8HyGkdSmqguYyg', '3d9DChrdc6BOeFsbrZ3Is0', 86700, 7500, 'Red Hot Chili Peppers', 'Under the Bridge', ['rock', '90s']),
   t('4Gfnly5CzMJQqkUFfoHaP3', '4Yf5bqU3NK4kNOypcrLYwU', 8000, 6870, 'Linkin Park', 'Faint', ['rock', 'numetal', '00s']),
   t('0J2IVb7kZRvOsiB30wsViE', '02nIXyjyNkVcNJM8LqrCwc', 61070, 7570, 'Sido', 'Carmen', ['hiphop', '10s', 'explicit', 'deutsch']),
-  t('4Ep0PApEyOyvC3WVSHHLJk', '2Drr6y3iawFnlZ6brImt7U', 0, 7600, 'Deichkind', 'In der Natur', ['20s', 'deutsch', 'test']),
+  t('4Ep0PApEyOyvC3WVSHHLJk', '2Drr6y3iawFnlZ6brImt7U', 0, 7600, 'Deichkind', 'In der Natur', ['20s', 'deutsch']),
+  t('3vLaOYCNCzngDf8QdBg2V1', '32OlwWuMpZ6b0aN2RZOeMS', 64900, 7800, 'Bruno Mars', 'Uptown Funk', ['10s', 'pop', 'funk']),
+  t('7jgBVzMVZuuhaTG5zQ0Vgk', '1dDNz8h95Gsu0W4QdxVVln', 43200, 8000, 'Madonna', '4 minutes', ['00s', 'hiphop', 'pop']),
 ]
 
 export const TRACK_BY_URI = new Map(TRACKS.map((track) => [track.uri, track]))
